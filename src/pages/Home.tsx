@@ -32,9 +32,9 @@ const Home = () => {
   const { categoryId, sort, currentPage, searchValue } =
     useSelector(selectFilter);
 
-  const onChangeCategory = (id: number) => {
+  const onChangeCategory = React.useCallback((id: number) => {
     dispatch(setCategoryId(id));
-  };
+  }, []);
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
@@ -101,11 +101,7 @@ const Home = () => {
   //   isMounted.current = true;
   // }, []);
 
-  const pizzas = items.map((obj: any) => (
-    
-      <PizzaBlock {...obj} />
-   
-  ));
+  const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ));
@@ -114,7 +110,7 @@ const Home = () => {
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onChangeCategory={onChangeCategory} />
-        <SortPopup />
+        <SortPopup value = {sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {status === "error" ? (
